@@ -14,8 +14,51 @@ RSpec.describe ProductsController, type: :controller do
 		it "is not valid with two products"	do
 			get :index, format: :json
 			parsed_json = JSON.parse(response.body)
-			expect( parsed_json["products"].length ).to eq(2)
+			expect( parsed_json["products"]["total"] ).to eq(2)
+			expect( parsed_json["products"]["total"] ).to eq( parsed_json["products"]["lists"].length)
 		end
+
+		it "valid response data" do
+			get :index, format: :json
+			parsed_json = JSON.parse(response.body)
+
+			expect( parsed_json["products"]["lists"].last ).to include_json(
+				name: new_product_2.name,
+				category: new_product_2.category,
+				price: new_product_2.price
+			)
+
+		end
+		
+	end
+
+	describe "GET Show" do
+		let!( :new_product_1 ) { create(:product) }
+		let!( :new_product_2 ) { create(:product) }
+
+		it "returns a successful 200 response" do
+			get :show, params: { id: new_product_1.id }
+			expect(response).to be_success
+		end
+
+		it "is a valid response" do
+			get :show, params: { id: new_product_1.id }
+			pj = JSON.parse(response.body)
+			expect( pj["product"] ).to include_json(
+				name: new_product_1.name,
+				category: new_product_1.category,
+				price: new_product_1.price
+			)
+		end
+
+		it "is not valid without proper id" do
+			get :show, params: { id: 1 }
+			expect(response).to have_http_status(422)
+
+			pj = JSON.parse(response.body)
+			expect( pj["message"] ).to eq("Invalid product id")
+		end
+
 
 	end
 
@@ -35,7 +78,7 @@ RSpec.describe ProductsController, type: :controller do
 
 				expect( pj ).to include_json(
 					name: "test",
-					success_message: "product created successfully"
+					success_message: "Product persisted successfully"
 				)
 
 			end
@@ -49,7 +92,7 @@ RSpec.describe ProductsController, type: :controller do
 				expect( response ).to have_http_status(422)
       
 				pj = JSON.parse(response.body)
-				expect( pj["error"]["message"] ).to eq(["Name can't be blank"])
+				expect( pj["message"] ).to eq( "Validation Failed" )
 			end
       
 			it "is not valid without price" do 
@@ -57,7 +100,7 @@ RSpec.describe ProductsController, type: :controller do
 				expect( response ).to have_http_status(422)
       
 				pj = JSON.parse(response.body)
-				expect( pj["error"]["message"] ).to eq(["Price can't be blank"])
+				expect( pj["message"] ).to eq( "Validation Failed" )
 			end
       
 			it "is not valid without category" do
@@ -65,7 +108,7 @@ RSpec.describe ProductsController, type: :controller do
 				expect( response ).to have_http_status(422)
       
 				pj = JSON.parse(response.body)
-				expect( pj["error"]["message"] ).to eq(["Category can't be blank"])
+				expect( pj["message"] ).to eq( "Validation Failed" )
 			end
 
 		end
@@ -75,27 +118,45 @@ RSpec.describe ProductsController, type: :controller do
 	end
 
 
+	describe "PUT #update" do
+		let!( :product_1 ) { create(:product) }
 
-
-
-
-
-
-
-
-
-=begin
-  describe "POST #create" do
-
-    context "with valid attributes" do
-      it "create new contact" do
-        post :create, product: attributes_for(:product)
-        expect(Product.count).to eq(1)
-      end
+    it "returns a successful 200 response" do
+      put :update, params: { id:product_1.id,  product: { name: "update_test", category:"cattegroy_test", price: 100 } }
+      expect( response ).to be_success
     end
 
-  end
-=end
+		it "updated successfully" do
+      put :update, params: { id:product_1.id,  product: { name: "update_test", category:"cattegroy_test", price: 100 } }
+
+			get :show, params: { id:product_1.id }
+			pj = JSON.parse( response.body )
+			expect( pj["product"]["name"] ).to eq("update_test")
+		end
+
+	end
+
+
+	describe "DELETE #destroy" do
+		let!( :product_1 ) { create(:product) }
+		let!( :product_2 ) { create(:product) }
+		
+		it "returns a successful 200 response" do
+			delete :destroy, params: { id: 1 }
+			expect( response ).to have_http_status(422)
+		end
+
+		it "Destroyed sucessfully" do
+			delete :destroy, params: { id: product_1 }
+			expect( Product.count ).to eq(1)
+		end
+
+
+	end
+
+
+
+
 
 
 

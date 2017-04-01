@@ -17,7 +17,6 @@ FactoryGirl.define do
 
 factory :product do
 
-
 	transient do
 		sold true
 	end
@@ -42,6 +41,14 @@ factory :product do
 	factory :sold_product, traits: [ :sold ]
 
 end
+
+
+factory :product_lists do
+	name "test"
+	category "cattegroy_test"
+	price 100
+end
+
 
 
 end
