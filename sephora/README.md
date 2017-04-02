@@ -41,8 +41,23 @@ http://localhost:3000/products/1
 Update Product:
 curl -i -H "Content-Type: application/json" -H "Accept: application/json" -X PUT -d '{"product" : {"name":"product_updated", "category":"update", "price":200, "sale_price":188} } ' 'http://localhost:3000/products/2'
 
+
+Pagination:
+http://localhost:3000/products?page=0&per_page=2
+
+Sorting:
+http://localhost:3000/products?sort=price:desc
+http://localhost:3000/products?sort=price:asc
+
+Filter:
+http://localhost:3000/products?price=200
+
+
+
+
 Delete Product:
 curl -XDELETE 'http://localhost:3000/products/3'
+
 
 
 

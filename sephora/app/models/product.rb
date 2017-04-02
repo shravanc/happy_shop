@@ -24,8 +24,6 @@ validates :price, presence: true
 scope :unsold_products, -> { where( sold_out: false ) }
 
 
-
-
 def create params
 
 	attributes = get_attribuets params	
@@ -42,10 +40,15 @@ end
 def index params
 
 	@products = Product.all
+	@products = @products.where(:category => params[:category]) if params[:category]
+	@products = @products.where(:price => params[:price].to_i)  if params[:price]
+	@products = @products.order(params[:sort].split(':').first => params[:sort].split(':').last ) if params[:sort] and ["desc","asc"].include?params[:sort].split(':').last
+	@products = paginate @products, params[:page], params[:per_page]
+	
 	data = contruct_index_response
 
 	response = {}
-	response[:products] = { :total => @products.count, :lists => data }
+	response[:products] = { total: @products.count, lists: data }
 
 	return [ true, response ]
 

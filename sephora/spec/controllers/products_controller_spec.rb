@@ -20,15 +20,22 @@ RSpec.describe ProductsController, type: :controller do
 
 		it "valid response data" do
 			get :index, format: :json
-			parsed_json = JSON.parse(response.body)
+			pj = JSON.parse(response.body)
 
-			expect( parsed_json["products"]["lists"].last ).to include_json(
+			expect( pj["products"]["lists"].last ).to include_json(
 				name: new_product_2.name,
 				category: new_product_2.category,
 				price: new_product_2.price
 			)
-
 		end
+
+		it "Validate Pagination" do
+			get :index, params: { per_page: 1 }
+			pj = JSON.parse(response.body)
+			expect( pj["products"]["total"] ).to eq(1)
+		end
+
+
 		
 	end
 
@@ -120,6 +127,7 @@ RSpec.describe ProductsController, type: :controller do
 
 	describe "PUT #update" do
 		let!( :product_1 ) { create(:product) }
+		let!( :product_2 ) { create(:product) }
 
     it "returns a successful 200 response" do
       put :update, params: { id:product_1.id,  product: { name: "update_test", category:"cattegroy_test", price: 100 } }
@@ -134,6 +142,22 @@ RSpec.describe ProductsController, type: :controller do
 			expect( pj["product"]["name"] ).to eq("update_test")
 		end
 
+		it "Sorting Validation" do
+      put :update, params: { id:product_1.id,  product: { price: 100 } }
+      put :update, params: { id:product_2.id,  product: { price: 200 } }
+			get :index, params: { sort: "price:desc"}
+			pj = JSON.parse(response.body)
+			expect( pj["products"]["lists"].first["name"] ).to eq(product_2.name)
+		end
+
+		it "Filter Validation" do
+      put :update, params: { id:product_1.id,  product: { category: "first" } }
+      put :update, params: { id:product_2.id,  product: { category: "second" } }
+			get :index, params: { category: "first"}
+			pj = JSON.parse(response.body)
+			expect( pj["products"]["lists"].first["category"] ).to eq("first")
+		end
+
 	end
 
 
@@ -142,12 +166,12 @@ RSpec.describe ProductsController, type: :controller do
 		let!( :product_2 ) { create(:product) }
 		
 		it "returns a successful 200 response" do
-			delete :destroy, params: { id: 1 }
-			expect( response ).to have_http_status(422)
+			delete :destroy, params: { id: product_1.id }
+			expect( response ).to be_success
 		end
 
 		it "Destroyed sucessfully" do
-			delete :destroy, params: { id: product_1 }
+			delete :destroy, params: { id: product_2.id }
 			expect( Product.count ).to eq(1)
 		end
 

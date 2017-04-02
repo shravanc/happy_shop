@@ -11,6 +11,7 @@ group :test do
   gem 'faker', '~> 1.6.1'
   gem 'factory_girl_rails', '~> 4.5.0'
 end
+gem 'pry'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0'

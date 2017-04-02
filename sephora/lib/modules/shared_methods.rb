@@ -8,5 +8,17 @@ def interate_list model
 
 end
 
+def paginate model, page, per_page
+
+	page = page || 0
+	per_page = per_page || 20
+
+	offset = page.to_i * per_page.to_i
+	per_page = per_page
+
+	model = model.limit(per_page.to_i).offset(offset)
+
+	return model
+end
 
 end
