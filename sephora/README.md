@@ -53,8 +53,6 @@ Filter:
 http://localhost:3000/products?price=200
 
 
-
-
 Delete Product:
 curl -XDELETE 'http://localhost:3000/products/3'
 

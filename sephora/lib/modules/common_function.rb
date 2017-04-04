@@ -1,5 +1,0 @@
-module CommonFunction
-
-
-
-end

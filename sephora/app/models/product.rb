@@ -115,9 +115,9 @@ private
 def get_attribuets params
 	product = params[:product]
 	data = {}
-	data[:name] 	 	= product[:name] 		if product[:name]
-	data[:category]  	= product[:category]	if product[:category]
-	data[:price]	 	= product[:price]		if product[:price]
+	data[:name] 	 	  = product[:name] 		    if product[:name]
+	data[:category]  	= product[:category]	  if product[:category]
+	data[:price]	 	  = product[:price]		    if product[:price]
 	data[:under_sale]	= product[:under_sale] 	if product[:under_sale]
 	data[:sale_price]	= product[:sale_price]	if product[:sale_price]
 	
@@ -126,8 +126,8 @@ end
 
 def response
 	data = {}
-	data[:id]	 		  	= @product.id
-	data[:name] 		  	= @product.name
+	data[:id]	 		  	      = @product.id
+	data[:name] 		  	    = @product.name
 	data[:success_message]	= "Product persisted successfully"
 	return data
 end
@@ -137,7 +137,7 @@ def contruct_index_response
 
 	interate_list( @products ) do |pr|
 		d1 = {}
-		d1[:id]		   	= pr.id
+		d1[:id]		   	  = pr.id
 		d1[:name] 	   	= pr.name
 		d1[:category]  	= pr.category
 		d1[:price]	   	= pr.price
@@ -152,7 +152,7 @@ end
 
 def contruct_show_response
 	d1 = {}
-	d1[:id]		   	= @product.id
+	d1[:id]		   	  = @product.id
 	d1[:name] 	   	= @product.name
 	d1[:category]  	= @product.category
 	d1[:price]	   	= @product.price
