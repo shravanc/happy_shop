@@ -115,19 +115,19 @@ private
 def get_attribuets params
 	product = params[:product]
 	data = {}
-	data[:name] 	 	  = product[:name] 		    if product[:name]
-	data[:category]  	= product[:category]	  if product[:category]
-	data[:price]	 	  = product[:price]		    if product[:price]
-	data[:under_sale]	= product[:under_sale] 	if product[:under_sale]
-	data[:sale_price]	= product[:sale_price]	if product[:sale_price]
+	data[:name] = product[:name] if product[:name]
+	data[:category]	= product[:category] if product[:category]
+	data[:price] = product[:price] if product[:price]
+	data[:under_sale]	= product[:under_sale] if product[:under_sale]
+	data[:sale_price]	= product[:sale_price] if product[:sale_price]
 	
 	return data
 end
 
 def response
 	data = {}
-	data[:id]	 		  	      = @product.id
-	data[:name] 		  	    = @product.name
+	data[:id]	= @product.id
+	data[:namei] = @product.name
 	data[:success_message]	= "Product persisted successfully"
 	return data
 end
@@ -137,10 +137,10 @@ def contruct_index_response
 
 	interate_list( @products ) do |pr|
 		d1 = {}
-		d1[:id]		   	  = pr.id
-		d1[:name] 	   	= pr.name
-		d1[:category]  	= pr.category
-		d1[:price]	   	= pr.price
+		d1[:id]	= pr.id
+		d1[:name]	= pr.name
+		d1[:category]	= pr.category
+		d1[:price] = pr.price
 		d1[:sale_price]	= pr.sale_price
 		d1[:under_sale]	= pr.under_sale
 		list << d1
@@ -152,10 +152,10 @@ end
 
 def contruct_show_response
 	d1 = {}
-	d1[:id]		   	  = @product.id
-	d1[:name] 	   	= @product.name
-	d1[:category]  	= @product.category
-	d1[:price]	   	= @product.price
+	d1[:id]	= @product.id
+	d1[:name]	= @product.name
+	d1[:category]	= @product.category
+	d1[:price] = @product.price
 	d1[:sale_price]	= @product.sale_price
 	d1[:under_sale]	= @product.under_sale
 	return d1
