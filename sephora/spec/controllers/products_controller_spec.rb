@@ -97,7 +97,7 @@ RSpec.describe ProductsController, type: :controller do
 			it "is not valid without name" do 
 				post :create, params: { product: { category:"cattegroy_test", price: 100 } }
 				expect( response ).to have_http_status(422)
-      
+     
 				pj = JSON.parse(response.body)
 				expect( pj["message"] ).to eq( "Validation Failed" )
 			end
@@ -117,11 +117,7 @@ RSpec.describe ProductsController, type: :controller do
 				pj = JSON.parse(response.body)
 				expect( pj["message"] ).to eq( "Validation Failed" )
 			end
-
 		end
-
-
-
 	end
 
 
@@ -129,13 +125,13 @@ RSpec.describe ProductsController, type: :controller do
 		let!( :product_1 ) { create(:product) }
 		let!( :product_2 ) { create(:product) }
 
-    it "returns a successful 200 response" do
-      put :update, params: { id:product_1.id,  product: { name: "update_test", category:"cattegroy_test", price: 100 } }
-      expect( response ).to be_success
-    end
+	    it "returns a successful 200 response" do
+			put :update, params: { id:product_1.id,  product: { name: "update_test", category:"cattegroy_test", price: 100 } }
+			expect( response ).to be_success
+	    end
 
 		it "updated successfully" do
-      put :update, params: { id:product_1.id,  product: { name: "update_test", category:"cattegroy_test", price: 100 } }
+			put :update, params: { id:product_1.id,  product: { name: "update_test", category:"cattegroy_test", price: 100 } }
 
 			get :show, params: { id:product_1.id }
 			pj = JSON.parse( response.body )
@@ -143,16 +139,16 @@ RSpec.describe ProductsController, type: :controller do
 		end
 
 		it "Sorting Validation" do
-      put :update, params: { id:product_1.id,  product: { price: 100 } }
-      put :update, params: { id:product_2.id,  product: { price: 200 } }
+			put :update, params: { id:product_1.id,  product: { price: 100 } }
+			put :update, params: { id:product_2.id,  product: { price: 200 } }
 			get :index, params: { sort: "price:desc"}
 			pj = JSON.parse(response.body)
 			expect( pj["products"]["lists"].first["name"] ).to eq(product_2.name)
 		end
 
 		it "Filter Validation" do
-      put :update, params: { id:product_1.id,  product: { category: "first" } }
-      put :update, params: { id:product_2.id,  product: { category: "second" } }
+			put :update, params: { id:product_1.id,  product: { category: "first" } }
+			put :update, params: { id:product_2.id,  product: { category: "second" } }
 			get :index, params: { category: "first"}
 			pj = JSON.parse(response.body)
 			expect( pj["products"]["lists"].first["category"] ).to eq("first")
@@ -161,30 +157,20 @@ RSpec.describe ProductsController, type: :controller do
 	end
 
 
-	describe "DELETE #destroy" do
-		let!( :product_1 ) { create(:product) }
-		let!( :product_2 ) { create(:product) }
-		
-		it "returns a successful 200 response" do
-			delete :destroy, params: { id: product_1.id }
-			expect( response ).to be_success
-		end
+describe "DELETE #destroy" do
+	let!( :product_1 ) { create(:product) }
+	let!( :product_2 ) { create(:product) }
+	
+	it "returns a successful 200 response" do
+		delete :destroy, params: { id: product_1.id }
+		expect( response ).to be_success
+	end
 
-		it "Destroyed sucessfully" do
-			delete :destroy, params: { id: product_2.id }
-			expect( Product.count ).to eq(1)
-		end
-
-
+	it "Destroyed sucessfully" do
+		delete :destroy, params: { id: product_2.id }
+		expect( Product.count ).to eq(1)
 	end
 
 
-
-
-
-
-
-
-
-
+	end
 end

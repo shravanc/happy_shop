@@ -17,12 +17,12 @@ require 'rails_helper'
 require 'pp'
 RSpec.describe Product do
 
-  context "Data Validations" do
-    subject { build(:product) }
+    context "Data Validations" do
+	    subject { build(:product) }
  
-    it "has a valid factory" do
-      expect( subject ).to be_valid
-    end
+	    it "has a valid factory" do
+	      expect( subject ).to be_valid
+	    end
 
 		it "is not valid without name" do
 			subject.name = ''
@@ -40,11 +40,11 @@ RSpec.describe Product do
 		end
 
 
-  end
+    end
 
 
 	context "Callback Validations" do
-    subject { build_stubbed(:product) }
+        subject { build_stubbed(:product) }
 
 		it { is_expected.to validate_presence_of(:name) }
 		it { is_expected.to validate_presence_of(:category) }
