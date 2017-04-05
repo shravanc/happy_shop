@@ -17,50 +17,49 @@ require 'rails_helper'
 require 'pp'
 RSpec.describe Product do
 
-    context "Data Validations" do
-	    subject { build(:product) }
+  context "Data Validations" do
+    subject { build(:product) }
  
-	    it "has a valid factory" do
-	      expect( subject ).to be_valid
-	    end
-
-		it "is not valid without name" do
-			subject.name = ''
-			expect( subject ).not_to be_valid
-		end
-
-		it "is not valid without category" do
-			subject.category = ''
-			expect( subject ).not_to be_valid
-		end
-
-		it "is not valid without price" do 
-			subject.price = ''
-			expect( subject ).not_to be_valid
-		end
-
-
+    it "has a valid factory" do
+      expect( subject ).to be_valid
     end
 
+  	it "is not valid without name" do
+  		subject.name = ''
+  		expect( subject ).not_to be_valid
+  	end
 
-	context "Callback Validations" do
-        subject { build_stubbed(:product) }
+  	it "is not valid without category" do
+  		subject.category = ''
+  		expect( subject ).not_to be_valid
+  	end
 
-		it { is_expected.to validate_presence_of(:name) }
-		it { is_expected.to validate_presence_of(:category) }
-		it { is_expected.to validate_presence_of(:price) }
+  	it "is not valid without price" do 
+  		subject.price = ''
+  		expect( subject ).not_to be_valid
+  	end
 
-	end
+  end
 
-	context "Scope Validation" do 
-		describe ".sold_out" do
-			let!( :new_product_1 ) { create(:product) }
-			let!( :new_product_2 ) { create(:product) }
-			let!( :old_product ) { create(:sold_product) }
-	
-			it { expect( Product.unsold_products.size).to eq(2) }
 
-		end
-	end
+  context "Callback Validations" do
+    subject { build_stubbed(:product) }
+
+  	it { is_expected.to validate_presence_of(:name) }
+  	it { is_expected.to validate_presence_of(:category) }
+  	it { is_expected.to validate_presence_of(:price) }
+
+  end
+
+  context "Scope Validation" do 
+  	describe ".sold_out" do
+  		let!( :new_product_1 ) { create(:product) }
+  		let!( :new_product_2 ) { create(:product) }
+  		let!( :old_product ) { create(:sold_product) }
+  
+  		it { expect( Product.unsold_products.size).to eq(2) }
+
+  	end
+  end
 
 end

@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
 before_action :load_object
 
 def create
-	status, data = @product.create params
+  status, data = @product.create params
   render_response({data: data, status: status ? :ok : :unprocessable_entity})
 end
 
@@ -30,7 +30,7 @@ end
 private
 
 def load_object
-	@product = Product.new
+  @product = Product.new
 end
 
 def render_response options
