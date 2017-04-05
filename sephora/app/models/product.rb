@@ -26,11 +26,11 @@ scope :unsold_products, -> { where( sold_out: false ) }
 
 def create params
 
-  attributes = get_attribuets params	
+  attributes = get_attribuets params  
 
   @product = Product.create(attributes)
   unless @product.valid?
-  	return [false, parse_active_record_errors( @product.errors ) ]
+    return [false, parse_active_record_errors( @product.errors ) ]
   end
 
   return [true, response]
@@ -58,7 +58,7 @@ def show params
   
   @product = Product.find_by_id(params[:id])
   if @product.nil?
-  	return [false, get_error_response("Invalid product id", [] ) ]
+    return [false, get_error_response("Invalid product id", [] ) ]
   end
 
   data = contruct_show_response
@@ -70,7 +70,7 @@ end
 
 def update params
 
-  attributes = get_attribuets params	
+  attributes = get_attribuets params  
   @product = Product.find(params[:id])
   if @product.nil?
     return [false, get_error_response("Invalid product id", [] ) ]
@@ -79,11 +79,9 @@ def update params
 
   @product.update_attributes(attributes)
   unless @product.valid?
-  	return [false, parse_active_record_errors( @product.errors ) ]
+    return [false, parse_active_record_errors( @product.errors ) ]
   end
 
-#  puts "------update------"
-#  p @product
   return [true, response]
 
 end
@@ -92,11 +90,11 @@ def destroy_product params
 
   @product = Product.find_by_id(params[:id])
   if @product.nil?
-  	return [false, get_error_response("Invalid product id", [] ) ]
+    return [false, get_error_response("Invalid product id", [] ) ]
   end
 
   unless @product.destroy
-  	return [false, get_error_response("Failed to destroy", [] ) ]
+    return [false, get_error_response("Failed to destroy", [] ) ]
   end
 
   resp = {}
@@ -136,14 +134,14 @@ def contruct_index_response
   list = []
 
   interate_list( @products ) do |pr|
-  	d1 = {}
-  	d1[:id]= pr.id
-  	d1[:name]= pr.name
-  	d1[:category]= pr.category
-  	d1[:price]= pr.price
-  	d1[:sale_price]= pr.sale_price
-  	d1[:under_sale]= pr.under_sale
-  	list << d1
+    d1 = {}
+    d1[:id]= pr.id
+    d1[:name]= pr.name
+    d1[:category]= pr.category
+    d1[:price]= pr.price
+    d1[:sale_price]= pr.sale_price
+    d1[:under_sale]= pr.under_sale
+    list << d1
   end
 
   return list
